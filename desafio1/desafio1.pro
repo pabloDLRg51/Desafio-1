@@ -4,4 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+        tablero.cpp \
+        validaciones.cpp
+
+HEADERS += \
+    tablero.h \
+    validaciones.h
