@@ -6,10 +6,10 @@ CONFIG -= qt
 SOURCES += \
     main.cpp \
     piezas.cpp \
-    tablero.cpp \
+        tablero.cpp \
     validaciones.cpp
 
 HEADERS += \
     piezas.h \
-    tablero.h \
+       tablero.h \
     validaciones.h

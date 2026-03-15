@@ -31,4 +31,5 @@ int main()
         }
     }
     liberarMemoriaTablero(tablero, filas);
+    return 0;
 }
