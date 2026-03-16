@@ -93,3 +93,60 @@ void encenderBit(unsigned char **tablero, int fila, int columna) {
     unsigned char mascara = 1 << bit;
     tablero[fila][byte] = tablero[fila][byte] | mascara;
 }
+void apagarBit(unsigned char**tablero, int fila, int columna){
+    /*funcion que apaga un bit, o sea lo pone en 0 dependiendo de la fila y la
+  columna. La funcion calcula que byte y que bit corresponden a la columna
+  indicada y utiliza una mascara para encontrar el bit
+
+  parametros:
+  unsigned char** tablero: un apuntador a apuntador que representa el tablero.
+  fila: fila del espacio que se desea modificar
+  columna: columna del espacio que se desea encender
+
+  No retorna nada. Simplemente modifica el tablero*/
+    int byte=columna/8;
+    int bit=columna%8;
+    unsigned char mascara=1<<bit;
+    tablero[fila][byte]=tablero[fila][byte]&(~mascara);
+}
+bool filaLlena(unsigned char**tablero, int fila, int columnas){
+    /*función que calcula si la fila esta llena, para que la fila este llena todas sus columnas
+     deben estar en 1. 8 bits en 1, equivalen a 255 en base 10.
+
+    parametros:
+    unsigned char** tablero: un apuntador a apuntador que representa el tablero.
+    fila: indice de la fila del espacio que se desea comprobar
+    columnas: numero de columnas que se desean comprobar
+
+    return: returno un booleano, dependiendo si la fila esta llena o no.
+     */
+    int bytes=columnas/8;
+    for(int i=0;i<bytes;i++){
+        if(tablero[fila][i]!=255){
+            return false;
+        }
+    }
+    return true;
+}
+void eliminarFila(unsigned char**tablero, int fila, int columnas){
+    /*
+    Funcion que elimina una fila del tablero cuando está llena. en lugar de borrar la fila directamente, el algoritmo desplaza todas las filas superiores una posicion hacia abajo y luego deja la fila superior vacia.
+
+    parametros:
+    unsigned char** tablero: un apuntador a apuntador que representa el tablero.
+    fila: indice de la fila del espacio que se desea eliminar
+    columnas: numero de columnas que se desean comprobar
+
+    no retorna nada, solo modifica el tablero.
+    */
+
+    int bytes=columnas/8;
+    for(int i=fila;i>0;i--){ //desplaza todas las filas superiores una posicion abajo
+        for(int j=0;j<bytes;j++){
+            tablero[i][j]=tablero[i-1][j];
+        }
+    }
+    for(int k=0;k<bytes;k++){
+        tablero[0][k]=0;//se llena la fila 0 de ceros
+    }
+}
