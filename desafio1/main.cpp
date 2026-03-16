@@ -59,6 +59,5 @@ int main()
 {
     unsigned char* S = crearS();
 
-
     imprimirPieza(S);
 }

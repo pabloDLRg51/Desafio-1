@@ -103,9 +103,9 @@ unsigned char *crearO() {
 
     return O;
 }
-unsigned char *crearIoriginal() {
+unsigned char *crearI() {
     /*
-   * Funcion que crea la figura I en su posicion original a nivel de bits,
+   * Funcion que crea la figura I a nivel de bits,
    * usando 1 y 0 y en una matriz de 4 filas y 8 columnas. Se usa static, porque
    * queremos que la pieza viva durante todo el programa
    *
@@ -125,31 +125,6 @@ unsigned char *crearIoriginal() {
     I[3] = (1 << 0);
 
     return I;
-}
-
-unsigned char *crearIdeLado() {
-    /*
-   * Funcion que crea la figura I ya rotada a nivel de bits, usando 1 y 0 y en
-   * una matriz de 4 filas y 8 columnas. Se usa static, porque queremos que la
-   * pieza viva durante todo el programa; ademas, para este caso en particular,
-   * se crear la I ya rotada por a parte, ya que es más facil de manejar asi
-   *
-   * Parametro:
-   * No usa, crea la I en su forma rotada a nivel de bits.
-   *
-   * retorno:
-   * retorna la direccion de memoria del primer elemento del arreglo,
-   * garantizando asi que se pueda encontrar siempre la pieza y usarla.
-   */
-
-    static unsigned char Igirada[4];
-
-    Igirada[0] = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3);
-    Igirada[1] = 0;
-    Igirada[2] = 0;
-    Igirada[3] = 0;
-
-    return Igirada;
 }
 
 unsigned char *crearZ() {
@@ -227,6 +202,20 @@ unsigned char *crearL() {
 // Rotación de las figuras
 
 void rotacionesHorarias(unsigned char pieza[]) {
+    /*
+Funcion que rota la figura 90 grados hacia la derecha. Aprovecha que la figura
+se guarda siempre como una matriz de 4x4 y para rotarla toma cada celda y
+transforma su posicion en la fila a la de la columna, y la de la columna la
+modifica usando "tamaño-1-fila".
+
+Parametro:
+unsigned char pieza[]: un arreglo de char, que basicamente es una matriz de n
+filas por 8 columnas que son los bits que ocupa un char. Usa unsigned para que
+el bit mas significativo no se altere por el signo.
+
+Retorno:
+No retorna nada, modifica la pieza original al rotarla.
+*/
 
     unsigned char rotacion[4] = {0};
 
@@ -254,6 +243,20 @@ void rotacionesHorarias(unsigned char pieza[]) {
 }
 
 void rotacionesAntihorarias(unsigned char pieza[]) {
+    /*
+Funcion que rota la figura 90 grados hacia la izquierda. Aprovecha que la figura
+se guarda siempre como una matriz de 4x4 y para rotarla toma cada celda y
+transforma su posicion en la fila a la de la columna, y la de la columna la
+modifica usando "tamaño-1-fila".
+
+Parametro:
+unsigned char pieza[]: un arreglo de char, que basicamente es una matriz de n
+filas por 8 columnas que son los bits que ocupa un char. Usa unsigned para que
+el bit mas significativo no se altere por el signo.
+
+Retorno:
+No retorna nada, modifica la pieza original al rotarla.
+*/
 
     unsigned char rotacion[4] = {0};
 
@@ -276,3 +279,6 @@ void rotacionesAntihorarias(unsigned char pieza[]) {
         // orignal
     }
 }
+
+
+
