@@ -2,11 +2,14 @@
 #define PIEZAS_H
 int centroTablero(int ancho);
 int desplazamientoAcentro(int centro, int centroFigura);
-void crearT(int ancho);
-void crearL(int ancho);
-void crearO(int ancho);
-void crearIoriginal(int ancho);
-void crearIdeLado(int ancho);
-void crearS(int ancho);
-void crearZ(int ancho);
+unsigned char *crearT();
+unsigned char *crearJ();
+unsigned char *crearO();
+unsigned char *crearIoriginal();
+unsigned char *crearIdeLado();
+unsigned char *crearZ();
+unsigned char *crearS();
+unsigned char *crearL();
+void rotacionesHorarias(unsigned char pieza[]);
+void rotacionesAntihorarias(unsigned char pieza[]);
 #endif // PIEZAS_H
