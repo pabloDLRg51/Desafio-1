@@ -1,9 +1,10 @@
 #include "tablero.h"
 #include <iostream>
+#include <cstdint>
 
 using namespace std;
 
-unsigned char **creacionTablero(int filas, int columnas) {
+uint8_t **creacionTablero(int filas, int columnas) {
     /*Función que crea un tablero de forma dinamica, donde cada fila almacena
   columnas en bytes, es decir 8 bits cada columna. Inicialmente es llenada por
   ceros. Bit 0 representa un espacio vacio en el tablero y el bit 1 un espacio
@@ -16,10 +17,10 @@ unsigned char **creacionTablero(int filas, int columnas) {
   retonar: un apuntador a apuntador que representa el tablero.*/
 
     int bytesPorFila = columnas / 8;
-    unsigned char **tablero =
-        new unsigned char *[filas]; /* Reserva de memoria para las filas*/
+    uint8_t **tablero =
+        new uint8_t *[filas]; /* Reserva de memoria para las filas*/
     for (int i = 0; i < filas; i++) {
-        tablero[i] = new unsigned char[bytesPorFila]; /* Reserva de memoria para los
+        tablero[i] = new uint8_t[bytesPorFila]; /* Reserva de memoria para los
                                                      bytes de cada fila*/
         for (int j = 0; j < bytesPorFila; j++) {
             tablero[i][j] = 0; /* Inicializacion de bytes en 0*/
@@ -27,7 +28,7 @@ unsigned char **creacionTablero(int filas, int columnas) {
     }
     return tablero;
 }
-void liberarMemoriaTablero(unsigned char **tablero, int filas) {
+void liberarMemoriaTablero(uint8_t **tablero, int filas) {
     /*Función que libera la memoria de cada fila del tablero y del tablero, para
   que no hayan fugas en la memoria.
 
@@ -42,7 +43,7 @@ void liberarMemoriaTablero(unsigned char **tablero, int filas) {
     }
     delete[] tablero;
 }
-bool espacio(unsigned char **tablero, int fila, int columna) {
+bool espacio(uint8_t **tablero, int fila, int columna) {
     /*funcion que verifica si una celda del tablero está libre. Esta funcion
   localiza el byte y bite que corresponde a la columna dentro del tablero.
   Utiliza una mascara con dezplazamiento para ubicar el espacio, para compprobar
@@ -64,7 +65,7 @@ bool espacio(unsigned char **tablero, int fila, int columna) {
     }
     return false;
 }
-void imprimirTablero(unsigned char **tablero, int filas, int columnas) {
+void imprimirTablero(uint8_t **tablero, int filas, int columnas) {
     for (int i = 0; i < filas; i++) {
         cout << '|';
         for (int j = 0; j < columnas; j++) {
@@ -77,7 +78,7 @@ void imprimirTablero(unsigned char **tablero, int filas, int columnas) {
         cout << '|' << endl;
     }
 }
-void encenderBit(unsigned char **tablero, int fila, int columna) {
+void encenderBit(uint8_t **tablero, int fila, int columna) {
     /*funcion que enciende un bit, o sea lo pone en 1 dependiendo de la fila y la
   columna. La funcion calcula que byte y que bit corresponden a la columna
   indicada y utiliza una mascara para encontrar el bit
@@ -93,7 +94,7 @@ void encenderBit(unsigned char **tablero, int fila, int columna) {
     unsigned char mascara = 1 << bit;
     tablero[fila][byte] = tablero[fila][byte] | mascara;
 }
-void apagarBit(unsigned char**tablero, int fila, int columna){
+void apagarBit(uint8_t**tablero, int fila, int columna){
     /*funcion que apaga un bit, o sea lo pone en 0 dependiendo de la fila y la
   columna. La funcion calcula que byte y que bit corresponden a la columna
   indicada y utiliza una mascara para encontrar el bit
@@ -106,10 +107,10 @@ void apagarBit(unsigned char**tablero, int fila, int columna){
   No retorna nada. Simplemente modifica el tablero*/
     int byte=columna/8;
     int bit=columna%8;
-    unsigned char mascara=1<<bit;
+    uint8_t mascara=1<<bit;
     tablero[fila][byte]=tablero[fila][byte]&(~mascara);
 }
-bool filaLlena(unsigned char**tablero, int fila, int columnas){
+bool filaLlena(uint8_t**tablero, int fila, int columnas){
     /*función que calcula si la fila esta llena, para que la fila este llena todas sus columnas
      deben estar en 1. 8 bits en 1, equivalen a 255 en base 10.
 
@@ -128,7 +129,7 @@ bool filaLlena(unsigned char**tablero, int fila, int columnas){
     }
     return true;
 }
-void eliminarFila(unsigned char**tablero, int fila, int columnas){
+void eliminarFila(uint8_t**tablero, int fila, int columnas){
     /*
     Funcion que elimina una fila del tablero cuando está llena. en lugar de borrar la fila directamente, el algoritmo desplaza todas las filas superiores una posicion hacia abajo y luego deja la fila superior vacia.
 

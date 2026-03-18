@@ -1,14 +1,15 @@
+#include <cstdint>
 #ifndef TABLERO_H
 #define TABLERO_H
-unsigned char** creacionTablero(int filas, int columnas);
-void liberarMemoriaTablero(unsigned char** tablero, int filas);
+uint8_t **creacionTablero(int filas, int columnas);
+void liberarMemoriaTablero(uint8_t **tablero, int filas);
 
-bool espacio(unsigned char** tablero, int fila, int columna);
-void imprimirTablero(unsigned char** tablero, int filas, int columnas);
+bool espacio(uint8_t **tablero, int fila, int columna);
+void imprimirTablero(uint8_t **tablero, int filas, int columnas);
 
-void encenderBit(unsigned char** tablero, int fila, int columna);
-void apagarBit(unsigned char** tablero, int fila, int columna);
+void encenderBit(uint8_t **tablero, int fila, int columna);
+void apagarBit(uint8_t **tablero, int fila, int columna);
 
-bool filaLlena(unsigned **tablero, int fila, int columna);
-void eliminarFila(unsigned char**tablero, int fila, int filas, int columnas);
+bool filaLlena(uint8_t **tablero, int fila, int columna);
+void eliminarFila(uint8_t **tablero, int fila, int filas, int columnas);
 #endif // TABLERO_H

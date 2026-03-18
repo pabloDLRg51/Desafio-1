@@ -38,11 +38,11 @@ using namespace std;
 
 void imprimirPieza(unsigned char pieza[]) {
 
-    for (int fila = 0; fila < 7; fila++) {
+    for (int fila = 0; fila < 4; fila++) {
 
         for (int col = 7; col >= 0; col--) {
 
-            if (pieza[fila] & (1 << col))
+            if (int(pieza[fila]) & (1 << col))
                 cout << "{ }";
             else
                 cout << " . ";
@@ -57,7 +57,8 @@ void imprimirPieza(unsigned char pieza[]) {
 
 int main()
 {
-    unsigned char* S = crearS();
+    uint8_t* S = crearT();
 
     imprimirPieza(S);
+    delete[] S;
 }

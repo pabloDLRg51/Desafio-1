@@ -1,4 +1,4 @@
-
+#include <cstdint>
 int centroTablero(int ancho)
 
 { /*
@@ -31,8 +31,7 @@ int desplazamientoAcentro(int centro, int centroFigura) {
 }
 
 // Creación de las figuras
-
-unsigned char *crearT() {
+uint8_t *crearT() {
     /*
    * Funcion que crea la figura T a nivel de bits, usando 1 y 0 y en una matriz
    * de 4 filas y 8 columnas. Se usa static, porque queremos que la pieza viva
@@ -46,17 +45,17 @@ unsigned char *crearT() {
    * garantizando asi que se pueda encontrar siempre la pieza y usarla.
    */
 
-    static unsigned char T[4];
+    uint8_t *T = new uint8_t[4];
 
-    T[0] = (1 << 0) | (1 << 1) | (1 << 2);
-    T[1] = (1 << 1);
+    T[0] = 0b111;
+    T[1] = 0b010;
     T[2] = 0;
     T[3] = 0;
 
     return T;
 }
 
-unsigned char *crearJ() {
+uint8_t *crearJ() {
     /*
    * Funcion que crea la figura J a nivel de bits, usando 1 y 0 y en una matriz
    * de 4 filas y 8 columnas. Se usa static, porque queremos que la pieza viva
@@ -70,17 +69,17 @@ unsigned char *crearJ() {
    * garantizando asi que se pueda encontrar siempre la pieza y usarla.
    */
 
-    static unsigned char J[4];
+    uint8_t *J = new uint8_t[4];
 
-    J[0] = (1 << 0);
-    J[1] = (1 << 0);
-    J[2] = (1 << 0) | (1 << 1);
+    J[0] = 0b01;
+    J[1] = 0b01;
+    J[2] = 0b11;
     J[3] = 0;
 
     return J;
 }
 
-unsigned char *crearO() {
+uint8_t *crearO() {
     /*
    * Funcion que crea la figura O a nivel de bits, usando 1 y 0 y en una matriz
    * de 4 filas y 8 columnas. Se usa static, porque queremos que la pieza viva
@@ -94,16 +93,16 @@ unsigned char *crearO() {
    * garantizando asi que se pueda encontrar siempre la pieza y usarla.
    */
 
-    static unsigned char O[4];
+    uint8_t *O = new uint8_t[4];
 
-    O[0] = (1 << 0) | (1 << 1);
-    O[1] = (1 << 0) | (1 << 1);
+    O[0] = 0b11;
+    O[1] = 0b11;
     O[2] = 0;
     O[3] = 0;
 
     return O;
 }
-unsigned char *crearI() {
+uint8_t *crearI() {
     /*
    * Funcion que crea la figura I a nivel de bits,
    * usando 1 y 0 y en una matriz de 4 filas y 8 columnas. Se usa static, porque
@@ -117,17 +116,17 @@ unsigned char *crearI() {
    * garantizando asi que se pueda encontrar siempre la pieza y usarla.
    */
 
-    static unsigned char I[4];
+    uint8_t *I = new uint8_t[4];
 
-    I[0] = (1 << 0);
-    I[1] = (1 << 0);
-    I[2] = (1 << 0);
-    I[3] = (1 << 0);
+    I[0] = 0b1;
+    I[1] = 0b1;
+    I[2] = 0b1;
+    I[3] = 0b1;
 
     return I;
 }
 
-unsigned char *crearZ() {
+uint8_t *crearZ() {
     /*
    * Funcion que crea la figura Z a nivel de bits, usando 1 y 0 y en una matriz
    * de 4 filas y 8 columnas. Se usa static, porque queremos que la pieza viva
@@ -141,17 +140,17 @@ unsigned char *crearZ() {
    * garantizando asi que se pueda encontrar siempre la pieza y usarla.
    */
 
-    static unsigned char Z[4];
+    uint8_t *Z = new uint8_t[4];
 
-    Z[0] = (1 << 1) | (1 << 2);
-    Z[1] = (1 << 1) | (1 << 0);
+    Z[0] = 0b11;
+    Z[1] = 0b011;
     Z[2] = 0;
     Z[3] = 0;
 
     return Z;
 }
 
-unsigned char *crearS() {
+uint8_t *crearS() {
     /*
    * Funcion que crea la figura S a nivel de bits, usando 1 y 0 y en una matriz
    * de 4 filas y 8 columnas. Se usa static, porque queremos que la pieza viva
@@ -165,17 +164,17 @@ unsigned char *crearS() {
    * garantizando asi que se pueda encontrar siempre la pieza y usarla.
    */
 
-    static unsigned char S[4];
+    uint8_t *S = new uint8_t[4];
 
-    S[0] = (1 << 0) | (1 << 1);
-    S[1] = (1 << 1) | (1 << 2);
+    S[0] = 0b011;
+    S[1] = 0b11;
     S[2] = 0;
     S[3] = 0;
 
     return S;
 }
 
-unsigned char *crearL() {
+uint8_t *crearL() {
     /*
    * Funcion que crea la figura L a nivel de bits, usando 1 y 0 y en una matriz
    * de 4 filas y 8 columnas. Se usa static, porque queremos que la pieza viva
@@ -189,11 +188,11 @@ unsigned char *crearL() {
    * garantizando asi que se pueda encontrar siempre la pieza y usarla.
    */
 
-    static unsigned char L[4];
+    uint8_t *L = new uint8_t[4];
 
-    L[0] = (1 << 1);
-    L[1] = (1 << 1);
-    L[2] = (1 << 0) | (1 << 1);
+    L[0] = 0b1;
+    L[1] = 0b1;
+    L[2] = 0b11;
     L[3] = 0;
 
     return L;
@@ -201,9 +200,9 @@ unsigned char *crearL() {
 
 // Rotación de las figuras
 
-void rotacionesHorarias(unsigned char pieza[]) {
+void rotacionesAntihorarias(uint8_t pieza[]) {
     /*
-Funcion que rota la figura 90 grados hacia la derecha. Aprovecha que la figura
+Funcion que rota la figura 90 grados hacia la izquierda. Aprovecha que la figura
 se guarda siempre como una matriz de 4x4 y para rotarla toma cada celda y
 transforma su posicion en la fila a la de la columna, y la de la columna la
 modifica usando "tamaño-1-fila".
@@ -217,7 +216,7 @@ Retorno:
 No retorna nada, modifica la pieza original al rotarla.
 */
 
-    unsigned char rotacion[4] = {0};
+    uint8_t rotacion[4] = {0};
 
     for (int fila = 0; fila < 4; fila++) {
 
@@ -242,9 +241,9 @@ No retorna nada, modifica la pieza original al rotarla.
     }
 }
 
-void rotacionesAntihorarias(unsigned char pieza[]) {
+void rotacionesHorarias(uint8_t pieza[]) {
     /*
-Funcion que rota la figura 90 grados hacia la izquierda. Aprovecha que la figura
+Funcion que rota la figura 90 grados hacia la derecha. Aprovecha que la figura
 se guarda siempre como una matriz de 4x4 y para rotarla toma cada celda y
 transforma su posicion en la fila a la de la columna, y la de la columna la
 modifica usando "tamaño-1-fila".
@@ -258,7 +257,7 @@ Retorno:
 No retorna nada, modifica la pieza original al rotarla.
 */
 
-    unsigned char rotacion[4] = {0};
+    uint8_t rotacion[4] = {0};
 
     for (int fila = 0; fila < 4; fila++) {
 
@@ -279,6 +278,3 @@ No retorna nada, modifica la pieza original al rotarla.
         // orignal
     }
 }
-
-
-
