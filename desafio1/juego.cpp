@@ -1,15 +1,15 @@
 #include <cstdint>
 
-int anchoPieza(uint8_t pieza[]){
+int anchoPieza(uint8_t pieza[]) {
 
     int ancho = 0;
 
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (int fila = 0; fila < 4; fila++) {
+        for (int columna = 0; columna < 4; columna++) {
 
-            if (pieza[i] & (1u << j)) {
-                if (j > ancho)
-                    ancho = j;
+            if (pieza[fila] & (1 << columna)) {
+                if (columna > ancho)
+                    ancho = columna;
             }
         }
     }
@@ -17,23 +17,61 @@ int anchoPieza(uint8_t pieza[]){
     return ancho + 1;
 }
 
-void colocarPieza(uint8_t** tablero, int filas, int columnas,
-                  uint8_t* pieza, int filaInicio, int colInicio) {
 
-    for (int i = 0; i < 4; i++) { // filas de la pieza
+void colocarPieza(uint8_t **tablero, uint8_t *pieza, int ancho) {
 
-        for (int j = 0; j < 4; j++) { // columnas (bits)
+    int columnaInicio = (ancho - anchoPieza(pieza)) / 2;
+    int filaInicio = 0;
 
-            if (pieza[i] & (1u << j)) {
+    for (int filaPieza = 0; filaPieza < 4; filaPieza++) { // filas de la pieza
 
-                int filaTab = filaInicio + i;
-                int colTab = colInicio + j;
+        for (int columnaPieza = 0; columnaPieza < 4;
+             columnaPieza++) { // columnas (bits)
 
-                int byteIndex = colTab / 8;
-                int bitIndex  = colTab % 8;
+            if (pieza[filaPieza] & (1 << columnaPieza)) {
 
-                tablero[filaTab][byteIndex] |= (1u << bitIndex);
+                int filaTablero = filaInicio + filaPieza;
+                int columnaTablero = columnaInicio + columnaPieza;
+
+                int byteIndex =
+                    columnaTablero /
+                                8; // busca en que byte de la columna hay que ubicar la pieza
+                int bitIndex = columnaTablero %
+                               8; // busca en que bit dentro del byte ubico la pieza
+
+                tablero[filaTablero][byteIndex] |= (1 << bitIndex);
             }
         }
     }
 }
+
+bool colision(uint8_t **tablero, uint8_t pieza[], int alto, int ancho,
+              int filaPieza, int columnaPieza) {
+
+    for (int filas = 0; filas < 4; filas++) {
+        for (int columnas = 0; columnas < 4; columnas++) {
+
+            if (pieza[filas] & (1 << columnas)) {
+
+                int filaTablero = filaPieza + filas;
+                int columnaTablero = columnaPieza + columnas;
+
+                if (filaTablero >= alto || columnaTablero >= ancho) {
+
+                    return true;
+                }
+
+                int byteIndex = columnaTablero / 8;
+                int bitIndex = columnaTablero % 8;
+
+                if (tablero[filaTablero][byteIndex] & (1 << bitIndex)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+// void moverPieza(uint8_t** tablero, uint8_t* pieza, int filas, int columnas)
+

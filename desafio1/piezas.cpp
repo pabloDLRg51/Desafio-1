@@ -1,34 +1,6 @@
 #include <cstdint>
-int centroTablero(int ancho)
 
-{ /*
-    Funcion que calcula el ancho del tablero para poder centrar la figura
-   * Parametros:
-   * int ancho: una variable tipo entero que contiene el ancho del tablero (por
-   * diseño siempre será multiplo de 8)
-   *
-   * retorno:
-   * retorna la posicion en la que esta la mitad del tablero.
-   */
-    return ancho / 2;
-}
 
-int desplazamientoAcentro(int centro, int centroFigura) {
-    /*
-   *Funcion que calcula cuantas posciones hay que desplazarse respecto al
-   * tablero para encontrar el centro de la figura y crearla.
-   *
-   * Parametros: int
-   * centro: El centro del tablero int centroFigura: En base a la geometria de
-   * la figura, en que poscion esta su centro.
-   *
-   *Retorno:
-   *Cuanto tenemos que desplazarnos para ubicar el centro de la figura en el
-   * centro del tablero.
-   */
-
-    return centro - centroFigura;
-}
 
 // Creación de las figuras
 uint8_t *crearT() {
@@ -200,46 +172,6 @@ uint8_t *crearL() {
 
 // Rotación de las figuras
 
-void rotacionesAntihorarias(uint8_t pieza[]) {
-    /*
-Funcion que rota la figura 90 grados hacia la izquierda. Aprovecha que la figura
-se guarda siempre como una matriz de 4x4 y para rotarla toma cada celda y
-transforma su posicion en la fila a la de la columna, y la de la columna la
-modifica usando "tamaño-1-fila".
-
-Parametro:
-unsigned char pieza[]: un arreglo de char, que basicamente es una matriz de n
-filas por 8 columnas que son los bits que ocupa un char. Usa unsigned para que
-el bit mas significativo no se altere por el signo.
-
-Retorno:
-No retorna nada, modifica la pieza original al rotarla.
-*/
-
-    uint8_t rotacion[4] = {0};
-
-    for (int fila = 0; fila < 4; fila++) {
-
-        for (int columna = 0; columna < 4; columna++) {
-
-            if (pieza[fila] & (1 << columna)) {
-
-                rotacion[columna] |= (1 << (3 - fila)); // La operacion viene de rotar
-                // geometricamente una matriz, donde (fila, columna) -> (columna,
-                // tamaño-1-fila), haciendo que las filas pasen a columnas y las
-                // columnas a filas
-            }
-        }
-    }
-
-    for (int auxiliar = 0; auxiliar < 4; auxiliar++) {
-
-        pieza[auxiliar] =
-            rotacion[auxiliar]; // Cambiamos la pieza para que ahora este rotada, al
-        // rotar 4 veces siempre se puede volver a la
-        // orignal
-    }
-}
 
 void rotacionesHorarias(uint8_t pieza[]) {
     /*
