@@ -1,4 +1,5 @@
 #include "tablero.h"
+#include "piezas.h"
 #include <iostream>
 #include <cstdint>
 
@@ -34,7 +35,7 @@ void liberarMemoriaTablero(uint8_t **tablero, int filas) {
 
   parametros:
   filas: numero de filas que el usuario haya ingresado para el tablero.
-  unsigned char** tablero: un apuntador a apuntador que representa el tablero.
+  uint8_t **tablero: apuntador a apuntador que representa el tablero.
 
   No devuelve ningun valor al finalizar su ejecución.*/
 
@@ -50,7 +51,7 @@ bool espacio(uint8_t **tablero, int fila, int columna) {
   se usa un operador and para determinar si esa posicion esta ocupada o vacia.
 
   parametros:
-  unsigned char** tablero: un apuntador a apuntador que representa el tablero.
+  uint8_t **tablero: apuntador a apuntador que representa el tablero.
   fila: fila del espacio que se desea consultar
   columna: columna del espacio que se desea consultar
 
@@ -65,33 +66,59 @@ bool espacio(uint8_t **tablero, int fila, int columna) {
     }
     return false;
 }
-void imprimirTablero(uint8_t **tablero, int filas, int columnas) {
-    for (int i = 0; i < filas; i++) {
+void imprimirTablero(uint8_t **tablero,int filas, int columnas,uint8_t* pieza,int filaPieza, int columnaPieza){
+    /*Funcion que imprime el tablero con la pieza actual superpuesta. Recorre cada celda del tablero y muestra '#' si está ocupada (tanto en el tablero o la pieza) y '.' si está vacia.
+
+    parametros:
+    uint8_t **tablero: apuntador a apuntador que representa el tablero.
+    int filas: numero de filas.
+    int columnas: numero de columnas.
+    uint8_t *pieza: arreglo que representa la pieza en formato 4x4 usando bits.
+    int filaPieza: fila donde se posiciona la pieza en el tablero.
+    int columnaPieza: columna donde se posiciona la pieza en el tablero.
+
+    no retorna nada, solo muestra el tablero en pantalla.
+    */
+    for (int i=0;i<filas;i++){
         cout << '|';
-        for (int j = 0; j < columnas; j++) {
-            if (espacio(tablero, i, j)) {
-                cout << " . ";
-            } else {
-                cout << " # ";
+        for(int j=0;j<columnas;j++){
+            bool ocupado= !espacio(tablero, i, j);
+            for(int filaPiezaLocal=0;filaPiezaLocal<4;filaPiezaLocal++){
+                for(int columnaPiezaLocal=0;columnaPiezaLocal<4;columnaPiezaLocal++){
+                    if (pieza[filaPiezaLocal] & (1<<columnaPiezaLocal)) {
+                        int filaEnTablero=filaPieza + filaPiezaLocal;
+                        int columnaEnTablero=columnaPieza + columnaPiezaLocal;
+                        if (filaEnTablero==i && columnaEnTablero==j) {
+                            ocupado = true;
+                        }
+                    }
+                }
+            }
+            if(ocupado){
+                cout<<" # ";
+            }
+            else{
+                cout<<" . ";
             }
         }
-        cout << '|' << endl;
+        cout<< "|\n";
     }
 }
+
 void encenderBit(uint8_t **tablero, int fila, int columna) {
     /*funcion que enciende un bit, o sea lo pone en 1 dependiendo de la fila y la
   columna. La funcion calcula que byte y que bit corresponden a la columna
   indicada y utiliza una mascara para encontrar el bit
 
   parametros:
-  unsigned char** tablero: un apuntador a apuntador que representa el tablero.
+  uint8_t **tablero: apuntador a apuntador que representa el tablero.
   fila: fila del espacio que se desea modificar
   columna: columna del espacio que se desea encender
 
   No retorna nada. Simplemente modifica el tablero*/
-    int byte = columna / 8;
+    int byte=columna / 8;
     int bit = columna % 8;
-    unsigned char mascara = 1 << bit;
+    uint8_t mascara= 1 << bit;
     tablero[fila][byte] = tablero[fila][byte] | mascara;
 }
 void apagarBit(uint8_t**tablero, int fila, int columna){
@@ -100,7 +127,7 @@ void apagarBit(uint8_t**tablero, int fila, int columna){
   indicada y utiliza una mascara para encontrar el bit
 
   parametros:
-  unsigned char** tablero: un apuntador a apuntador que representa el tablero.
+  uint8_t **tablero: apuntador a apuntador que representa el tablero.
   fila: fila del espacio que se desea modificar
   columna: columna del espacio que se desea encender
 
@@ -115,7 +142,7 @@ bool filaLlena(uint8_t**tablero, int fila, int columnas){
      deben estar en 1. 8 bits en 1, equivalen a 255 en base 10.
 
     parametros:
-    unsigned char** tablero: un apuntador a apuntador que representa el tablero.
+    uint8_t **tablero: apuntador a apuntador que representa el tablero.
     fila: indice de la fila del espacio que se desea comprobar
     columnas: numero de columnas que se desean comprobar
 
@@ -134,7 +161,7 @@ void eliminarFila(uint8_t**tablero, int fila, int columnas){
     Funcion que elimina una fila del tablero cuando está llena. en lugar de borrar la fila directamente, el algoritmo desplaza todas las filas superiores una posicion hacia abajo y luego deja la fila superior vacia.
 
     parametros:
-    unsigned char** tablero: un apuntador a apuntador que representa el tablero.
+    uint8_t **tablero: apuntador a apuntador que representa el tablero.
     fila: indice de la fila del espacio que se desea eliminar
     columnas: numero de columnas que se desean comprobar
 

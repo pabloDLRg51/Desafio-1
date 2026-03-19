@@ -1,5 +1,5 @@
 #include <cstdint>
-
+#include <cstdlib> //random
 
 
 // Creación de las figuras
@@ -209,4 +209,16 @@ No retorna nada, modifica la pieza original al rotarla.
         // rotar 4 veces siempre se puede volver a la
         // orignal
     }
+}
+uint8_t* piezaAleatoria() {
+
+    int random = rand() % 7;
+
+    if (random == 0) return crearT();
+    else if (random == 1) return crearJ();
+    else if (random == 2) return crearO();
+    else if (random == 3) return crearI();
+    else if (random == 4) return crearZ();
+    else if (random == 5) return crearS();
+    else return crearL();
 }

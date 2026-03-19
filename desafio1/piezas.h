@@ -8,5 +8,6 @@ uint8_t *crearI();
 uint8_t *crearZ();
 uint8_t *crearS();
 uint8_t *crearL();
+uint8_t* piezaAleatoria();
 void rotacionesHorarias(uint8_t pieza[]);
 #endif // PIEZAS_H
