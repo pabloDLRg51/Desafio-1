@@ -14,19 +14,20 @@ int anchoPieza(uint8_t pieza[]) {
   retorna:
   int:ancho de la pieza (numero de columnas ocupadas).
    */
-    int ancho = 0;
+    int ancho = 0;//guarda la mna maxima encontrada con bits en 1
 
     for (int fila = 0; fila < 4; fila++) {
         for (int columna = 0; columna < 4; columna++) {
-
+            //verifica si en esa posicion hay un bit en 1, con un mascara
             if (pieza[fila] & (1 << columna)) {
+                //Si la columna actual es mayor que la maxima guardada, actualiza el ancho
                 if (columna > ancho)
                     ancho = columna;
             }
         }
     }
 
-    return ancho + 1;
+    return ancho + 1;//se suma 1 porque las columnas empiezan en 0
 }
 bool colision(uint8_t **tablero, uint8_t pieza[], int alto, int ancho,
               int filaPieza, int columnaPieza) {
@@ -48,28 +49,37 @@ bool colision(uint8_t **tablero, uint8_t pieza[], int alto, int ancho,
   un booleano si hay colision retorna true, false si no.
 
   */
-    for (int filas = 0; filas < 4; filas++) {
-        for (int columnas = 0; columnas < 4; columnas++) {
-            if (pieza[filas] & (1 << columnas)) {
-                int filaTablero = filaPieza + filas;
-                int columnaTablero = columnaPieza + columnas;
-                if ((columnaTablero < 0) || (filaTablero >= alto) ||
+    //recorre la matriz 4x4 de la pieza
+    for(int filas = 0; filas < 4; filas++) {
+        for(int columnas = 0; columnas < 4; columnas++) {
+            //verifica si hay un bloque activo en la pieza
+            if(pieza[filas]&(1<<columnas)){
+                //calcula la posicion en el tablero
+                int filaTablero=filaPieza+filas;
+                int columnaTablero=columnaPieza+columnas;
+                //verifica si se sale de los limites del tablero
+                if((columnaTablero<0)||(filaTablero>=alto) ||
                     (columnaTablero >= ancho)) {
-                    return true;
+                    return true;//hay colision en el borde
                 }
-                if (filaTablero < 0) {
+                //si esta por encima del tablero no se valida colision, para cuando la pieza esta entrando
+                if(filaTablero<0){
                     continue;
                 }
-                if (filaTablero >= 0) {
-                    int byteIndex = columnaTablero / 8;
-                    int bitIndex = columnaTablero % 8;
-                    if (tablero[filaTablero][byteIndex] & (1 << bitIndex)) {
-                        return true;
+                //verifica si choca con celdas ya ocupadas
+                if(filaTablero>=0){
+                    //ubicar el byte y bit dentro del tablero
+                    int byteIndex=columnaTablero/8;
+                    int bitIndex=columnaTablero%8;
+                    //revisa si el ese bit ya esta ocupado
+                    if (tablero[filaTablero][byteIndex]&(1<< bitIndex)) {
+                        return true;//retorna colision con otra pieza
                     }
                 }
             }
         }
     }
+    //si no se detecto ningun problema, no hay colision
     return false;
 }
 
@@ -90,8 +100,9 @@ bool moverIzquierda(uint8_t **tablero, uint8_t *pieza, int alto, int ancho,
   retorna:
   un booleano si la pieza se movio retorna true, false si no.
    */
+    //verifica si al moverse a la izquierda habra colision
     if (!colision(tablero, pieza, alto, ancho, fila, columna - 1)) {
-        columna--;
+        columna--;//si no hay colision, actualiza la posicion real
         return true;
     }
     return false;
@@ -137,8 +148,9 @@ bool bajar(uint8_t **tablero, uint8_t *pieza, int alto, int ancho, int &fila,
   retorna:
   un booleano si la pieza se movio retorna true, false si no.
   */
+    //verifica si hay colision al mover hacia abajo
     if (!colision(tablero, pieza, alto, ancho, fila + 1, columna)) {
-        fila++;
+        fila++;//si no hay colision, se actualiza la fila
         return true;
     }
     return false;
@@ -160,13 +172,16 @@ bool puedeBajar(uint8_t **tablero, uint8_t *pieza, int alto, int ancho,
   retorna:
   booleano true si puede bajar, false si no.
   */
-    // si no hay colisión una fila más abajo, puede bajar
+    //si no hay colisión una fila más abajo, puede bajar
     return !colision(tablero, pieza, alto, ancho, fila + 1, columna);
 }
 void rotar(uint8_t **tablero, uint8_t *pieza, int alto, int ancho, int fila,
-           int columna) {
+           int columna){
+    //rota la pieza 90 grados
     rotacion(pieza);
-    if (colision(tablero, pieza, alto, ancho, fila, columna)) {
+    //verifica si despues de rotar hay colision
+    if(colision(tablero, pieza, alto, ancho, fila, columna)){
+        //si hay colision, se dehace la rtoacion, rotando la ficha 3 veces volviendola a su estado original
         rotacion(pieza);
         rotacion(pieza);
         rotacion(pieza);
@@ -185,13 +200,16 @@ void fijarPieza(uint8_t **tablero, uint8_t *pieza, int fila, int columna) {
 
   no retorna nada
   */
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (pieza[i] & (1 << j)) {
+    for(int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            //verifica si hay un bloque activo en la pieza
+            if (pieza[i]&(1<<j)){
+                //calcula la posicion de la pieza en el tablero
                 int filaTablero = fila + i;
                 int columnaTablero = columna + j;
-                if ((filaTablero >= 0) && (columnaTablero >= 0)) {
-                    encenderBit(tablero, filaTablero, columnaTablero);
+                //evita escribir fuera del tablero
+                if ((filaTablero >= 0) && (columnaTablero >= 0)){
+                    encenderBit(tablero, filaTablero, columnaTablero);//enciende el bit en el tablero
                 }
             }
         }
@@ -212,13 +230,12 @@ uint8_t *nuevaPieza(int anchoTablero, int &fila, int &columna) {
   uint8_t* pieza: puntero a la nueva pieza generada.
 
   */
-    uint8_t *pieza = piezaAleatoria();
-    int filaMinima, filaMaxima, columnaMinima, columnaMaxima;
-    obtenerLimitesrotacion(pieza, filaMinima, filaMaxima, columnaMinima,
-                           columnaMaxima);
-    int altura = filaMaxima - filaMinima + 1;
-    fila = -(altura / 2);
-    columna = (anchoTablero - anchoPieza(pieza)) / 2;
+    uint8_t *pieza=piezaAleatoria();//genera la pieza de forma aleatoria
+    int filaMinima, filaMaxima, columnaMinima, columnaMaxima;//limites de la pieza
+    obtenerLimitesrotacion(pieza, filaMinima, filaMaxima, columnaMinima, columnaMaxima);//zona donde hay bits en 1 de la pieza
+    int altura = filaMaxima - filaMinima + 1;//altura de la pieza
+    fila = -(altura / 2);//posicion la pieza arriba del tablero
+    columna = (anchoTablero - anchoPieza(pieza)) / 2;//centra la pieza en el tablero
     return pieza;
 }
 bool procesarMovimiento(uint8_t **tablero, uint8_t *pieza, int alto, int ancho,
@@ -242,27 +259,29 @@ bool& movimientoHorizontalUsado: indica si ya se hizo un movimiento horizontal
 retorna:
 bool: true si la pieza debe fijarse en el tablero, false si no
 */
-    switch (accion) {
+    switch(accion){
     case 'a':
-        if (!movimientoHorizontalUsado) {
+        if(!movimientoHorizontalUsado){
             moverIzquierda(tablero, pieza, alto, ancho, fila, columna);
-            movimientoHorizontalUsado = true;
+            movimientoHorizontalUsado=true;//condicion del movimiento horizontal, para que no quede en un bucle infinito
         }
         break;
     case 'd':
-        if (!movimientoHorizontalUsado) {
+        if(!movimientoHorizontalUsado){
             moverDerecha(tablero, pieza, alto, ancho, fila, columna);
-            movimientoHorizontalUsado = true;
+            movimientoHorizontalUsado=true;
         }
         break;
     case 's':
-        if (bajar(tablero, pieza, alto, ancho, fila, columna)) {
-            movimientoHorizontalUsado = false;
-            if (!puedeBajar(tablero, pieza, alto, ancho, fila, columna)) {
+        //intenta bajar la pieza
+        if(bajar(tablero, pieza, alto, ancho, fila, columna)){
+            movimientoHorizontalUsado=false;//si baja correctamente, se reinicia el uso del movimiento horizontal
+            if (!puedeBajar(tablero, pieza, alto, ancho, fila, columna)){
                 return true;
             }
-        } else {
-            return true;
+        }
+        else{
+            return true;//si no baja, ya colisiono
         }
         break;
     case 'w':
@@ -272,5 +291,5 @@ bool: true si la pieza debe fijarse en el tablero, false si no
         cout << "Ingrese una opcion valida." << endl;
         break;
     }
-    return false;
+    return false;//puede seguir bajando
 }
