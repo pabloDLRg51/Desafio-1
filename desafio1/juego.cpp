@@ -50,14 +50,20 @@ un booleano si hay colision retorna true, false si no.
             if(pieza[filas]&(1 << columnas)){
                 int filaTablero= filaPieza + filas;
                 int columnaTablero= columnaPieza + columnas;
-                if(filaTablero<0||columnaTablero<0||filaTablero >= alto || columnaTablero >= ancho){
+                if((columnaTablero<0)||(filaTablero>=alto)||(columnaTablero>=ancho)){
                     return true;
                 }
-                int byteIndex=columnaTablero / 8;
-                int bitIndex=columnaTablero % 8;
-                if(tablero[filaTablero][byteIndex]&(1 << bitIndex)){
-                    return true;
+                if(filaTablero<0){
+                    continue;
                 }
+                if(filaTablero>=0){
+                    int byteIndex=columnaTablero / 8;
+                    int bitIndex=columnaTablero % 8;
+                    if(tablero[filaTablero][byteIndex]&(1 << bitIndex)){
+                        return true;
+                    }
+                }
+
             }
         }
     }
@@ -164,7 +170,12 @@ no retorna nada
     for(int i=0;i<4;i++){
         for(int j=0;j<4;j++){
             if(pieza[i]&(1<<j)){
-                encenderBit(tablero, fila + i, columna + j);
+                int filaTablero=fila+i;
+                int columnaTablero=columna+j;
+                if((filaTablero>=0)&&(columnaTablero>=0)){
+                    encenderBit(tablero, filaTablero,columnaTablero);
+                }
+
             }
         }
     }
@@ -183,40 +194,59 @@ uint8_t* pieza: puntero a la nueva pieza generada.
 
 */
     uint8_t* pieza=piezaAleatoria();
-    fila=0;
+    int filaMinima, filaMaxima, columnaMinima, columnaMaxima;
+    obtenerLimitesrotacion(pieza, filaMinima, filaMaxima, columnaMinima, columnaMaxima);
+    int altura=filaMaxima-filaMinima+1;
+    fila=-(altura/2);
     columna=(anchoTablero-anchoPieza(pieza))/2;
     return pieza;
 }
-bool procesarMovimiento(uint8_t**tablero, uint8_t*pieza, int alto, int ancho, int& fila, int& columna, char accion){
+bool procesarMovimiento(uint8_t** tablero, uint8_t* pieza,int alto, int ancho,int& fila, int& columna,char accion,bool& movimientoHorizontalUsado){
+    /*
+Procesa la accion ingresada por el usuario y actualiza la posicion de la pieza. Permite mover a la izquierda, derecha, bajar o rotar. Controla que solo se pueda realizar un movimiento horizontal por turno.
+
+parametros:
+uint8_t** tablero: apuntador a apuntador que representa el tablero
+uint8_t* pieza: pieza actual en formato 4x4
+int alto: numero de filas del tablero
+int ancho: numero de columnas del tablero
+int& fila: posicion vertical de la pieza
+int& columna: posicion horizontal de la pieza
+char accion: accion ingresada por el usuario
+bool& movimientoHorizontalUsado: indica si ya se hizo un movimiento horizontal
+
+retorna:
+bool: true si la pieza debe fijarse en el tablero, false si no
+*/
     switch(accion){
-        case 'a':{
-            moverIzquierda(tablero, pieza, alto, ancho, fila, columna);
-            break;
+    case 'a':
+        if(!movimientoHorizontalUsado){
+            moverIzquierda(tablero,pieza,alto,ancho,fila,columna);
+            movimientoHorizontalUsado=true;
         }
-        case 'd':{
-            moverDerecha(tablero, pieza, alto, ancho, fila, columna);
-            break;
+        break;
+    case 'd':
+        if(!movimientoHorizontalUsado){
+            moverDerecha(tablero,pieza,alto,ancho,fila,columna);
+            movimientoHorizontalUsado=true;
         }
-        case 's':{
-            if(bajar(tablero, pieza, alto, ancho, fila, columna)){
-                if(!puedeBajar(tablero, pieza, alto, ancho, fila, columna)){
-                    return true;
-                }
-            }
-            else{
+        break;
+    case 's':
+        if(bajar(tablero,pieza,alto,ancho,fila,columna)){
+            movimientoHorizontalUsado=false;
+            if(!puedeBajar(tablero,pieza,alto,ancho,fila,columna)){
                 return true;
             }
+        } else {
+            return true;
+        }
         break;
-        }
-        case 'w':{
-            rotar(tablero, pieza, alto, ancho, fila, columna);
-            break;
-        }
-        default:{
-            cout<<"Ingrese una opcion valida."<<endl;
-            break;
-        }
-        }
-
+    case 'w':
+        rotar(tablero, pieza, alto, ancho, fila, columna);
+        break;
+    default:
+        cout << "Ingrese una opcion valida." << endl;
+        break;
+    }
     return false;
 }

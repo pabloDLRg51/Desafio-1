@@ -163,8 +163,7 @@ uint8_t*: direccion de memoria del arreglo que contiene la pieza L
 
 // Rotación de las figuras
 
-void obtenerLimitesrotacion(uint8_t pieza[], int &filaMinima, int &filaMaxima,
-                            int &columnaMinima, int &columnaMaxima) {
+void obtenerLimitesrotacion(uint8_t pieza[], int &filaMinima, int &filaMaxima,int &columnaMinima, int &columnaMaxima) {
     /*
 Funcion que obtiene los limites reales de la pieza dentro de la matriz de 4x4.
 Recorre todas las posiciones y determina la primera y ultima fila y columna
@@ -188,11 +187,8 @@ no retorna nada
     columnaMaxima = -1;
 
     for (int fila = 0; fila < 4; fila++) {
-
         for (int columna = 0; columna < 4; columna++) {
-
             if (pieza[fila] & (1 << columna)) {
-
                 if (fila < filaMinima)
                     filaMinima = fila;
                 if (fila > filaMaxima)
@@ -206,8 +202,7 @@ no retorna nada
     }
 }
 
-void rotarEnlimites(uint8_t pieza[], uint8_t rotada[], int filaMinima,
-                    int filaMaxima, int columnaMinima, int columnaMaxima) {
+void rotarEnlimites(uint8_t pieza[], uint8_t rotada[], int filaMinima,int filaMaxima, int columnaMinima, int columnaMaxima) {
     /*
 Funcion que rota la pieza 90 grados en sentido horario sin desplazarla dentro
 de la matriz de 4x4. Utiliza los limites de la pieza para trabajar unicamente
@@ -227,16 +222,11 @@ int columnaMaxima: columna donde termina la pieza
 no retorna nada
 */
     int alto = filaMaxima - filaMinima + 1;
-
-    for (int fila = filaMinima; fila <= filaMaxima; fila++) {
-
-        for (int columna = columnaMinima; columna <= columnaMaxima; columna++) {
-
+    for (int fila =filaMinima; fila <= filaMaxima; fila++) {
+        for (int columna= columnaMinima; columna <= columnaMaxima; columna++) {
             if (pieza[fila] & (1 << columna)) {
-
                 int nuevaFila = filaMinima + (columna - columnaMinima);
                 int nuevaColumna = columnaMinima + (alto - 1 - (fila - filaMinima));
-
                 rotada[nuevaFila] |= (1 << nuevaColumna);
             }
         }
@@ -282,7 +272,7 @@ no retorna nada
     copiarPieza(rotada, pieza);
 }
 
-// aleatoriedad
+
 uint8_t *piezaAleatoria() {
     /*
 Funcion que genera una pieza aleatoria entre las figuras disponibles. Utiliza

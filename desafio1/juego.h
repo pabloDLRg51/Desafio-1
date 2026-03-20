@@ -13,5 +13,5 @@ void rotar(uint8_t** tablero, uint8_t* pieza, int alto, int ancho, int fila, int
 void fijarPieza(uint8_t** tablero, uint8_t* pieza,int fila, int columna);
 uint8_t* nuevaPieza(int anchoTablero, int& fila, int& columna);
 
-bool procesarMovimiento(uint8_t**tablero, uint8_t*pieza, int alto, int ancho, int& fila, int& columna, char accion);
+bool procesarMovimiento(uint8_t**tablero, uint8_t*pieza, int alto, int ancho, int& fila, int& columna, char accion, bool& movimientoHorizontalUsado);
 #endif // JUEGO_H
