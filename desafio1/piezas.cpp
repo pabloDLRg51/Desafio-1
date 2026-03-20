@@ -15,12 +15,12 @@ retorno:
 uint8_t*: direccion de memoria del arreglo que contiene la pieza T
 */
 
-    uint8_t *T = new uint8_t[4];
+    uint8_t *T = new uint8_t[4]; //reservamos la memoria dinamica para guardar la pieza
 
     T[0] = 0b111;
     T[1] = 0b010;
     T[2] = 0;
-    T[3] = 0;
+    T[3] = 0; //organizamos la figura usando 0b para organizarla con bits
 
     return T;
 }
@@ -182,13 +182,14 @@ int &columnaMaxima: referencia donde se guarda la columna final de la pieza
 no retorna nada
 */
     filaMinima = 4;
-    filaMaxima = -1;
+    filaMaxima = -1; //filas maxima y minima que puede ocupar una pieza
     columnaMinima = 4;
-    columnaMaxima = -1;
+    columnaMaxima = -1; // empezamos la maxima en -1 por si la columna llegara a estar en 0,
+    // la primera iteracion del if (que empieza en 0) sea valida
 
     for (int fila = 0; fila < 4; fila++) {
-        for (int columna = 0; columna < 4; columna++) {
-            if (pieza[fila] & (1 << columna)) {
+        for (int columna = 0; columna < 4; columna++) { //recorremos la pieza por sus filas y columnas
+            if (pieza[fila] & (1 << columna)) { //revisamos si hay un 1 en la celda (fila, columna)
                 if (fila < filaMinima)
                     filaMinima = fila;
                 if (fila > filaMaxima)
@@ -196,7 +197,9 @@ no retorna nada
                 if (columna < columnaMinima)
                     columnaMinima = columna;
                 if (columna > columnaMaxima)
-                    columnaMaxima = columna;
+                    columnaMaxima = columna; // proceso de comparacion para
+                // actualizar el valor de las filas y
+                // columnas maximas y minimas
             }
         }
     }
@@ -221,13 +224,17 @@ int columnaMaxima: columna donde termina la pieza
 
 no retorna nada
 */
-    int alto = filaMaxima - filaMinima + 1;
-    for (int fila =filaMinima; fila <= filaMaxima; fila++) {
-        for (int columna= columnaMinima; columna <= columnaMaxima; columna++) {
-            if (pieza[fila] & (1 << columna)) {
-                int nuevaFila = filaMinima + (columna - columnaMinima);
-                int nuevaColumna = columnaMinima + (alto - 1 - (fila - filaMinima));
-                rotada[nuevaFila] |= (1 << nuevaColumna);
+    int alto = filaMaxima - filaMinima + 1; //calcula el alto real de la pieza (el +1 es porque los arreglos empiezan en 0)
+    for (int fila =filaMinima; fila <= filaMaxima; fila++) { //recorre unicamente las filas validas de la pieza
+        for (int columna= columnaMinima; columna <= columnaMaxima; columna++) { //recorre unicamente las columnas validas de la pieza
+            if (pieza[fila] & (1 << columna)) { // busca 1 en la posicion (fila, columna)
+                int nuevaFila = filaMinima + (columna - columnaMinima); // calcula la rotacion para la fila de la
+                // pieza (cambia la columna por la fila)
+                int nuevaColumna = columnaMinima + (alto - 1 - (fila - filaMinima)); // calcula la rotacion para la columna de la
+                // pieza (usa alto - 1 - la fila en la que
+                // esta, para poder ubicar la fila como
+                // una columna)
+                rotada[nuevaFila] |= (1 << nuevaColumna);    //crea la pieza rotada
             }
         }
     }
@@ -246,7 +253,7 @@ uint8_t *destino: pieza donde se almacenan los datos copiados
 no retorna nada
 */
     for (int auxiliar = 0; auxiliar < 4; auxiliar++) {
-        destino[auxiliar] = origen[auxiliar];
+        destino[auxiliar] = origen[auxiliar]; //copia lo que hay en el origen y lo va transfiriendo al destino
     }
 }
 
@@ -266,10 +273,10 @@ no retorna nada
     int filaMinima, filaMaxima, columnaMinima, columnaMaxima;
 
     obtenerLimitesrotacion(pieza, filaMinima, filaMaxima, columnaMinima,
-                           columnaMaxima);
+                           columnaMaxima); //busca las filas y columnas validas para rotar
     rotarEnlimites(pieza, rotada, filaMinima, filaMaxima, columnaMinima,
-                   columnaMaxima);
-    copiarPieza(rotada, pieza);
+                   columnaMaxima); //rota la pieza
+    copiarPieza(rotada, pieza); //copia la pieza
 }
 
 

@@ -8,7 +8,7 @@ bool espacio(uint8_t **tablero, int fila, int columna);
 void imprimirTablero(uint8_t **tablero, int filas, int columnas, uint8_t*pieza, int filaPieza, int columnaPieza);
 
 void encenderBit(uint8_t **tablero, int fila, int columna);
-void apagarBit(uint8_t **tablero, int fila, int columna);
+
 
 bool filaLlena(uint8_t **tablero, int fila, int columna);
 void eliminarFila(uint8_t**tablero, int fila, int columnas);

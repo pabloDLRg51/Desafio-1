@@ -129,22 +129,7 @@ void encenderBit(uint8_t **tablero, int fila, int columna) {
     uint8_t mascara= 1 << bit; //mascara para encontrar el bit y comparar
     tablero[fila][byte] = tablero[fila][byte] | mascara;//encender bit en la posicion indicada
 }
-void apagarBit(uint8_t**tablero, int fila, int columna){
-    /*funcion que apaga un bit, o sea lo pone en 0 dependiendo de la fila y la
-  columna. La funcion calcula que byte y que bit corresponden a la columna
-  indicada y utiliza una mascara para encontrar el bit
 
-  parametros:
-  uint8_t **tablero: apuntador a apuntador que representa el tablero.
-  fila: fila del espacio que se desea modificar
-  columna: columna del espacio que se desea encender
-
-  No retorna nada. Simplemente modifica el tablero*/
-    int byte=columna/8;
-    int bit=columna%8;
-    uint8_t mascara=1<<bit;//mascara para encontrar el bit y comparar
-    tablero[fila][byte]=tablero[fila][byte]&(~mascara);//apagar bit en la posicion indicada
-}
 bool filaLlena(uint8_t**tablero, int fila, int columnas){
     /*función que calcula si la fila esta llena, para que la fila este llena todas sus columnas
      deben estar en 1. 8 bits en 1, equivalen a 255 en base 10.
