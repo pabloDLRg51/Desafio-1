@@ -143,11 +143,11 @@ booleano true si puede bajar, false si no.
     return !colision(tablero, pieza, alto, ancho, fila + 1, columna);
 }
 void rotar(uint8_t** tablero, uint8_t* pieza, int alto, int ancho, int fila, int columna){
-    rotacionesHorarias(pieza);
+    rotacion(pieza);
     if(colision(tablero, pieza, alto, ancho, fila, columna)){
-        rotacionesHorarias(pieza);
-        rotacionesHorarias(pieza);
-        rotacionesHorarias(pieza);
+        rotacion(pieza);
+        rotacion(pieza);
+        rotacion(pieza);
     }
 }
 void fijarPieza(uint8_t** tablero, uint8_t* pieza,int fila, int columna){

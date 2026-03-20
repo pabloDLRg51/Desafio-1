@@ -9,8 +9,8 @@ int main(){
     int filas=10;
     int columnas=16;
     uint8_t** tablero = creacionTablero(filas, columnas);
-    uint8_t* pieza;
-    int fila, columna;
+    uint8_t* pieza = 0;
+    int fila = 0, columna =0;
     while (true){
         pieza = nuevaPieza(columnas, fila, columna);
         if (colision(tablero, pieza, filas, columnas, fila, columna)) {
