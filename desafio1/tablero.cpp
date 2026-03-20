@@ -158,7 +158,7 @@ bool filaLlena(uint8_t**tablero, int fila, int columnas){
 }
 void eliminarFila(uint8_t**tablero, int fila, int columnas){
     /*
-    Funcion que elimina una fila del tablero cuando está llena. en lugar de borrar la fila directamente, el algoritmo desplaza todas las filas superiores una posicion hacia abajo y luego deja la fila superior vacia.
+    Funcion que elimina una fila del tablero cuando está llena. en lugar de borrar la fila directamente, el algoritmo desplaza todas las filas superioresuna posicion hacia abajo y luego deja la fila superior vacia.
 
     parametros:
     uint8_t **tablero: apuntador a apuntador que representa el tablero.

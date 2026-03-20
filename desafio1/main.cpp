@@ -2,12 +2,10 @@
 #include "tablero.h"
 #include "piezas.h"
 #include "juego.h"
-#include "cstdlib"
-#include "ctime"
+
 using namespace std;
 
 int main(){
-    srand(time(0));
     int filas=10;
     int columnas=16;
     uint8_t** tablero = creacionTablero(filas, columnas);

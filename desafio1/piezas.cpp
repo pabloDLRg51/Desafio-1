@@ -1,5 +1,5 @@
 #include <cstdint>
-#include <cstdlib> //random
+#include <random>
 
 
 // Creación de las figuras
@@ -212,7 +212,11 @@ No retorna nada, modifica la pieza original al rotarla.
 }
 uint8_t* piezaAleatoria() {
 
-    int random = rand() % 7;
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<> dist(0, 6);
+
+    int random = dist(gen);
 
     if (random == 0) return crearT();
     else if (random == 1) return crearJ();
