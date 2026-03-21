@@ -18,8 +18,7 @@ uint8_t **creacionTablero(int filas, int columnas) {
   retonar: un apuntador a apuntador que representa el tablero.*/
 
     int bytesPorFila = columnas / 8;
-    uint8_t **tablero =
-        new uint8_t *[filas]; /* Reserva de memoria para las filas*/
+    uint8_t **tablero =new uint8_t *[filas]; /* Reserva de memoria para las filas*/
     for (int i=0;i<filas;i++) {
         tablero[i]=new uint8_t[bytesPorFila]; /* Reserva de memoria para los bytes de cada fila*/
         for (int j=0;j<bytesPorFila;j++) {
@@ -59,7 +58,7 @@ bool espacio(uint8_t **tablero, int fila, int columna) {
   false si el espacio esta ocupado (Bit en 1)*/
     int byte=columna / 8;
     int bit=columna % 8;
-    char mascara = 1 << bit;/*mascara para encontrar el bit*/
+    uint8_t mascara = 1 << bit;/*mascara para encontrar el bit*/
     if ((tablero[fila][byte] & mascara) == 0) { /*condicion que revisa el bit*/
         return true;
     }

@@ -272,10 +272,8 @@ no retorna nada
 
     int filaMinima, filaMaxima, columnaMinima, columnaMaxima;
 
-    obtenerLimitesrotacion(pieza, filaMinima, filaMaxima, columnaMinima,
-                           columnaMaxima); //busca las filas y columnas validas para rotar
-    rotarEnlimites(pieza, rotada, filaMinima, filaMaxima, columnaMinima,
-                   columnaMaxima); //rota la pieza
+    obtenerLimitesrotacion(pieza, filaMinima, filaMaxima, columnaMinima,columnaMaxima); //busca las filas y columnas validas para rotar
+    rotarEnlimites(pieza, rotada, filaMinima, filaMaxima, columnaMinima,columnaMaxima); //rota la pieza
     copiarPieza(rotada, pieza); //copia la pieza
 }
 
@@ -292,9 +290,10 @@ no recibe parametros
 retorno:
 uint8_t*: direccion de memoria de la pieza generada aleatoriamente
 */
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<> dist(0, 6);
+
+    static std::random_device rd;//se crea un generador de numeros aleatorios basado en el sistema
+    static std::mt19937 gen(rd());//se usa mt19937 que es un generador mas estable
+    static std::uniform_int_distribution<> dist(0, 6);//distribbucion uniforme entre 0 y 6
 
     int random = dist(gen);
 
