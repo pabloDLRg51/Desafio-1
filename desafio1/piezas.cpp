@@ -107,8 +107,8 @@ uint8_t*: direccion de memoria del arreglo que contiene la pieza Z
 
     uint8_t *Z = new uint8_t[4];
 
-    Z[0] = 0b11;
-    Z[1] = 0b011;
+    Z[0] = 0b011;
+    Z[1] = 0b110;
     Z[2] = 0;
     Z[3] = 0;
 
@@ -130,8 +130,8 @@ uint8_t*: direccion de memoria del arreglo que contiene la pieza S
 
     uint8_t *S = new uint8_t[4];
 
-    S[0] = 0b011;
-    S[1] = 0b11;
+    S[0] = 0b110;
+    S[1] = 0b011;
     S[2] = 0;
     S[3] = 0;
 
